@@ -1,10 +1,25 @@
-# Expense Tracker — Web Version
+# Expense Tracker
 
-Flask conversion of your original CustomTkinter desktop app. Same SQLite
-schema and stats logic; the UI is now server-rendered HTML/CSS with
-Chart.js instead of Tkinter/matplotlib.
+A web app to track daily expenses — add, edit, delete entries, and see
+spending broken down by category and month with charts.
 
-## Run locally
+Originally built as a desktop app (Python + CustomTkinter), later
+converted into a Flask web app so it could be deployed and used from
+any browser.
+
+## Features
+
+- Dashboard with total spending, this month's spending, and top category
+- Add / edit / delete expenses
+- All expenses table
+- Category and monthly spending charts (bar, pie, line)
+
+## Tech Stack
+
+Python, Flask, SQLAlchemy, SQLite (dev) / PostgreSQL (production),
+Chart.js
+
+## Running locally
 
 ```bash
 pip install -r requirements.txt
@@ -13,28 +28,12 @@ python app.py
 
 Visit http://localhost:5000
 
-## Deploy for free — Render.com
+## Deployment
 
-1. Push this folder to a GitHub repo.
-2. Go to render.com → New → Web Service → connect the repo.
-3. Build command: `pip install -r requirements.txt`
-4. Start command: `gunicorn app:app`
-5. Deploy. Render gives you a live `https://yourapp.onrender.com` URL.
+Deployed on Render, with a PostgreSQL database attached through the
+`DATABASE_URL` environment variable. Locally, it falls back to SQLite
+automatically if `DATABASE_URL` isn't set.
 
-## Deploy for free — Railway.app
 
-1. Push to GitHub, then railway.app → New Project → Deploy from repo.
-2. Railway auto-detects Flask. Set the start command to `gunicorn app:app` if it doesn't.
-3. Deploy — you get a live URL automatically.
+Start command: `gunicorn app:app`
 
-## Important note on the database
-
-SQLite (`expenses.db`) is a local file. On Render/Railway's free tiers,
-the filesystem is **not persistent** across deploys/restarts — your data
-can be wiped. For a real production deployment, either:
-- Use Render's/Railway's persistent disk add-on, or
-- Switch to a hosted Postgres database (both platforms offer a free one)
-  by swapping the `sqlite3` calls for `psycopg2`/`SQLAlchemy`.
-
-For personal/small-scale use this is often fine as-is — just know a
-restart may reset your expenses unless you add a persistent disk.
