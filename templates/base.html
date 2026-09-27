@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Expense Tracker{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">💰 ExpenseTracker</div>
+        <nav>
+            <a href="{{ url_for('dashboard') }}" class="nav-link {{ 'active' if active == 'dashboard' }}">📊 Dashboard</a>
+            <a href="{{ url_for('add_expense') }}" class="nav-link {{ 'active' if active == 'add' }}">➕ Add Expense</a>
+            <a href="{{ url_for('all_expenses') }}" class="nav-link {{ 'active' if active == 'all' }}">🧾 All Expenses</a>
+            <a href="{{ url_for('charts') }}" class="nav-link {{ 'active' if active == 'charts' }}">📈 Charts</a>
+        </nav>
+    </aside>
+
+    <main class="main-area">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

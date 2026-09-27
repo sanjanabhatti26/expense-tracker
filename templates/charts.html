@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Charts — Expense Tracker{% endblock %}
+{% block content %}
+
+<h1 class="page-title">Spending Charts</h1>
+
+{% if has_data %}
+<div class="chart-grid">
+    <div class="table-card chart-card">
+        <canvas id="categoryBar"></canvas>
+    </div>
+    <div class="table-card chart-card">
+        <canvas id="categoryPie"></canvas>
+    </div>
+    <div class="table-card chart-card chart-wide">
+        <canvas id="monthlyLine"></canvas>
+    </div>
+</div>
+{% else %}
+<p class="empty-state">Add some expenses to see charts here.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+const categories = {{ categories | tojson }};
+const values = {{ values | tojson }};
+const colors = {{ colors | tojson }};
+const months = {{ months | tojson }};
+const monthValues = {{ month_values | tojson }};
+
+Chart.defaults.color = "#D3D5E0";
+Chart.defaults.font.family = "'Segoe UI', sans-serif";
+
+if (categories.length > 0) {
+    new Chart(document.getElementById('categoryBar'), {
+        type: 'bar',
+        data: {
+            labels: categories,
+            datasets: [{ label: 'Spending by Category', data: values, backgroundColor: colors }]
+        },
+        options: {
+            plugins: { title: { display: true, text: 'Category-wise Spending', color: '#fff' }, legend: { display: false } },
+            scales: { x: { grid: { color: '#2D2E3E' } }, y: { grid: { color: '#2D2E3E' } } }
+        }
+    });
+
+    new Chart(document.getElementById('categoryPie'), {
+        type: 'pie',
+        data: { labels: categories, datasets: [{ data: values, backgroundColor: colors }] },
+        options: { plugins: { title: { display: true, text: 'Spending Share', color: '#fff' } } }
+    });
+
+    new Chart(document.getElementById('monthlyLine'), {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{ label: 'Monthly Spending', data: monthValues, borderColor: '#5B8DEF', backgroundColor: 'rgba(91,141,239,0.2)', fill: true, tension: 0.3 }]
+        },
+        options: {
+            plugins: { title: { display: true, text: 'Spending Over Time', color: '#fff' } },
+            scales: { x: { grid: { color: '#2D2E3E' } }, y: { grid: { color: '#2D2E3E' } } }
+        }
+    });
+}
+</script>
+{% endblock %}

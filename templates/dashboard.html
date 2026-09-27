@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Expense Tracker{% endblock %}
+{% block content %}
+
+<h1 class="page-title">Dashboard</h1>
+
+<div class="stat-grid">
+    <div class="stat-card" style="--accent:#5B8DEF">
+        <div class="stat-title">Total Spending</div>
+        <div class="stat-value">₹ {{ "%.2f"|format(stats.total) }}</div>
+    </div>
+    <div class="stat-card" style="--accent:#28C76F">
+        <div class="stat-title">This Month</div>
+        <div class="stat-value">₹ {{ "%.2f"|format(stats.month_spend) }}</div>
+    </div>
+    <div class="stat-card" style="--accent:#FF9F43">
+        <div class="stat-title">Top Category</div>
+        <div class="stat-value">{{ stats.top_category }}</div>
+    </div>
+</div>
+
+<h2 class="section-title">Recent Expenses</h2>
+
+<div class="table-card">
+    {% if recent %}
+    <table class="expense-table">
+        <thead>
+            <tr><th>Expense</th><th>Amount</th><th>Category</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+            {% for e in recent %}
+            <tr>
+                <td>{{ e.expense_name }}</td>
+                <td>₹{{ "%.2f"|format(e.amount) }}</td>
+                <td>{{ e.category }}</td>
+                <td>{{ e.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">No expenses yet — add your first one!</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Add Expense — Expense Tracker{% endblock %}
+{% block content %}
+
+<h1 class="page-title">Add Expense</h1>
+
+<div class="form-card">
+    <form method="POST">
+        <label class="field-label">Expense Name</label>
+        <input class="field-input" type="text" name="expense_name" placeholder="e.g. Groceries" value="{{ form_values.expense_name }}">
+
+        <label class="field-label">Amount (₹)</label>
+        <input class="field-input" type="text" name="amount" placeholder="e.g. 450" value="{{ form_values.amount }}">
+
+        <label class="field-label">Category</label>
+        <select class="field-input" name="category">
+            {% for c in categories %}
+            <option value="{{ c }}" {{ "selected" if c == form_values.category }}>{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="field-label">Date (YYYY-MM-DD)</label>
+        <input class="field-input" type="text" name="date" value="{{ form_values.date }}">
+
+        <button class="btn btn-primary" type="submit">Save Expense</button>
+    </form>
+</div>
+
+{% endblock %}
